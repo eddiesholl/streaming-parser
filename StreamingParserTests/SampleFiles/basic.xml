@@ -1,0 +1,26 @@
+﻿<Root>
+	
+	<Tier1Items>
+		<Tier1Item name="first tier1 item name">first tier1 item value</Tier1Item>
+		<Tier1Item name="second tier1 item name">second tier1 item value</Tier1Item>
+	</Tier1Items>
+	
+	<Tier1Element>
+		
+		<Tier2Items>
+			<Tier2Item name="first tier2 item name">first tier2 item value</Tier2Item>
+			<Tier2Item name="second tier2 item name">second tier2 item value</Tier2Item>
+		</Tier2Items>
+		
+		<Tier2Element>
+			
+			<Tier3Items>
+				<Tier3Item name="first tier3 item name">first tier3 item value</Tier3Item>
+				<Tier3Item name="second tier3 item name">second tier3 item value</Tier3Item>
+			</Tier3Items>
+
+			<Tier3Element/>
+			
+		</Tier2Element>
+	</Tier1Element>
+</Root>
