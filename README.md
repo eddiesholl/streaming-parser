@@ -1,5 +1,7 @@
 # streaming-parser
 
+[![Build status](https://ci.appveyor.com/api/projects/status/e6vjthsxkudefvpi?svg=true)](https://ci.appveyor.com/project/eddiesholl/streaming-parser)
+
 ## Overview
 
 The aim of this project is to make it easy to covert sections of large XML documents into deserialized .NET objects, without loading everything into memory at once. The expectation is that there are classes already defined for the content of the document. This means that navigation can be specified using your typed class structure, but actual deserialization occurs after navigation.
