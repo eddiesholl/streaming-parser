@@ -2,9 +2,9 @@
 
 ## Overview
 
-The aim of this project is to make it easy to covert sections of large XML documents into serialized .NET objects, without loading everything into memory at once. The expectation is that there are classes already defined for the content of the document. This means that navigation can be specified using your typed class structure, but actual deserialization occurs after navigation.
+The aim of this project is to make it easy to covert sections of large XML documents into deserialized .NET objects, without loading everything into memory at once. The expectation is that there are classes already defined for the content of the document. This means that navigation can be specified using your typed class structure, but actual deserialization occurs after navigation.
 
-The idea for this solution came up as a bit of a thought experiment, in response to a problem that came up in a workplace discussion. A large xml file is sitting on disk, and the 'easiest' approach to accessing content is obviously to use a plain old [XmlSerializer.Deserialize()](https://msdn.microsoft.com/en-us/library/system.xml.serialization.xmlserializer.deserialize%28v=vs.110%29.aspx). If we already have the classes defined, is there a way to 'navigate' the hierarchy first, and the deserialize only the chunks that you are interested in?
+The idea for this solution arose a bit of a thought experiment, in response to a problem that came up in a workplace discussion. A large xml file is sitting on disk, and the 'easiest' approach to accessing content is to use a plain old [XmlSerializer.Deserialize()](https://msdn.microsoft.com/en-us/library/system.xml.serialization.xmlserializer.deserialize%28v=vs.110%29.aspx). If we already have the classes defined, is there a way to 'navigate' the hierarchy first, and the deserialize only the chunks that you are interested in?
 
 The solution is effectively using 2 very basic .NET xml tools:
 
