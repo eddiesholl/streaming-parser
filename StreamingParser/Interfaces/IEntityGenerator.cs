@@ -12,7 +12,6 @@ namespace StreamingParser
 	{
 		TChild Generate<TChild>(Expression<Func<TNode, TChild>> navigationExpression);
 
-		IEnumerable<TChild> GenerateElements<TChild, TChildEnumerable>(Expression<Func<TNode, TChildEnumerable>> navigationExpression)
-			where TChildEnumerable : IEnumerable<TChild>;
+		IEnumerable<TChild> GenerateElements<TChild>(Expression<Func<TNode, IEnumerable<TChild>>> navExpression);
 	}
 }

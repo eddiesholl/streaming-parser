@@ -48,8 +48,7 @@ namespace StreamingParser.Xml
 			return DeserializeElementFromXml<TChild>(subTreeForGeneration);
 		}
 
-		public IEnumerable<TChild> GenerateElements<TChild, TChildEnumerable>(Expression<Func<TNode, TChildEnumerable>> navExpression)
-			where TChildEnumerable : IEnumerable<TChild>
+		public IEnumerable<TChild> GenerateElements<TChild>(Expression<Func<TNode, IEnumerable<TChild>>> navExpression)
 		{
 			var additionalNavList = XmlExpressionAnalyzer.GetElementNames(navExpression);
 			XmlTextReader sourceXmlReader = _dataProvider.GetReader();

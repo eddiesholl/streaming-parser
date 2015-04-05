@@ -52,7 +52,7 @@ namespace StreamParserTests
 			var sut = SutFactory.CreateXmlStreamingParser<Root>("basic.xml");
 
 			var nav = sut.Navigate(r => r.T1E);
-			var deserializedResult = nav.GenerateElements<Tier2Item, List<Tier2Item>>(n => n.Tier2Items);
+			var deserializedResult = nav.GenerateElements(n => n.Tier2Items);
 
 			Assert.NotNull(deserializedResult);
 
