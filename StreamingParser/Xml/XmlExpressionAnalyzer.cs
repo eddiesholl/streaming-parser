@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace StreamingParser.Xml
 			
 			while (nextExpression != null && nextExpression.NodeType == ExpressionType.MemberAccess)
 			{
-				result.Insert(0, GetXmlPathName(nextExpression.Type));
+				result.Insert(0, GetXmlPathName(nextExpression));
 				nextExpression = nextExpression.Expression as MemberExpression;
 			}
 
@@ -29,19 +30,53 @@ namespace StreamingParser.Xml
 			return t.Name;
 		}
 
-		public string GetXmlPathName<TParent, TChild>(Expression<Func<TParent, TChild>> navigationExpression)
+		public string GetXmlPathName<TParent, TChild>(Expression<Func<TParent, TChild>> navExpression)
 		{
 			string result = string.Empty;
 
-			Type parentType = navigationExpression.Parameters[0].Type;
-			Type desiredReturnElement = navigationExpression.ReturnType;
+			Type parentType = navExpression.Parameters[0].Type;
+			Type desiredReturnElement = navExpression.ReturnType;
 
 			bool isEnum = desiredReturnElement
 				.GetInterfaces()
 				.Any(ti => ti.IsGenericType && ti.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 
-			//navigationExpression.
-			//navigationExpression.
+			return result;
+		}
+
+		public static string GetXmlPathName(MemberExpression navExpression)
+		{
+			string result = string.Empty;
+
+			var navPropertyInfo = navExpression.Member as PropertyInfo;
+
+			if (navPropertyInfo == null)
+			{
+				// Need to fail here, not a property navigation
+			}
+			else
+			{
+				// parentType will be important once we are interrogating xml directives
+				Type parentType = navPropertyInfo.DeclaringType;
+
+				Type desiredReturnElement = navPropertyInfo.PropertyType;
+
+				// Check if the property being travsersed is a collection of items
+				// If so, modify our desired element name
+				bool isEnum = desiredReturnElement
+					.GetInterfaces()
+					.Any(ti => ti.IsGenericType && ti.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+				if (isEnum)
+				{
+					result = navPropertyInfo.Name;
+				}
+				else
+				{
+					result = GetXmlPathName(desiredReturnElement);
+				}
+			}
+			
 			return result;
 		}
 	}

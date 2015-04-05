@@ -31,5 +31,15 @@ namespace StreamParserTests
 			Assert.Equal(typeof(Tier1Element).Name, result.First());
 			Assert.Equal(typeof(Tier2Element).Name, result.Last());
 		}
+
+		[Fact]
+		public void CheckPathForBasicList()
+		{
+			var result = XmlExpressionAnalyzer.GetElementNames<Tier1Element, List<Tier2Item>>(r => r.Tier2Items).ToList();
+
+			Assert.NotNull(result);
+			Assert.Equal(1, result.Count);
+			Assert.Equal("Tier2Items", result.First());
+		}
 	}
 }

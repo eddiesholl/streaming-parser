@@ -40,22 +40,21 @@ namespace StreamingParser.Xml
 
 		public TChild Generate<TChild>(Expression<Func<TNode, TChild>> navExpression)
 		{
-			var navList = XmlExpressionAnalyzer.GetElementNames(navExpression);
-			string finalElementName = XmlExpressionAnalyzer.GetXmlPathName(typeof(TChild));
+			var additionalNavList = XmlExpressionAnalyzer.GetElementNames(navExpression);
 			XmlTextReader sourceXmlReader = _dataProvider.GetReader();
 
-			XmlReader subTreeForGeneration = ExecuteNavigation(_currentPath, sourceXmlReader, finalElementName);
+			XmlReader subTreeForGeneration = ExecuteNavigation(_currentPath, sourceXmlReader, additionalNavList.ToArray());
 
 			return DeserializeElementFromXml<TChild>(subTreeForGeneration);
 		}
 
-		public IEnumerable<TChild> GenerateElements<TChild, TChildEnumerable>(Expression<Func<TNode, TChildEnumerable>> navigationExpression)
+		public IEnumerable<TChild> GenerateElements<TChild, TChildEnumerable>(Expression<Func<TNode, TChildEnumerable>> navExpression)
 			where TChildEnumerable : IEnumerable<TChild>
 		{
-			string enumElementName = XmlExpressionAnalyzer.GetXmlPathName(typeof(TChildEnumerable));
+			var additionalNavList = XmlExpressionAnalyzer.GetElementNames(navExpression);
 			XmlTextReader sourceXmlReader = _dataProvider.GetReader();
 
-			XmlReader subTreeForGeneration = ExecuteNavigation(_currentPath, sourceXmlReader, enumElementName);
+			XmlReader subTreeForGeneration = ExecuteNavigation(_currentPath, sourceXmlReader, additionalNavList.ToArray());
 
 			string elementNameForGeneration = XmlExpressionAnalyzer.GetXmlPathName(typeof(TChild));
 			string currentElementName = subTreeForGeneration.LocalName;
