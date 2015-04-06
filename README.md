@@ -27,7 +27,8 @@ Stream largeXmlDataStream = assembly.GetManifestResourceStream("MyAssembly.large
 // Construct your root parser object. This can be used for multiple navigation and generation requests
 var parser = new XmlStreamingParser<RootObject>(largeXmlDataStream);
 
-// Perform a navigation to a nested object. There is still no data loaded into memory. In fact, even the navigation of the underlying reader only occurs at Generate time
+// Perform a navigation to a nested object.
+// There is still no data loaded into memory. In fact, even the navigation of the underlying reader only occurs at Generate time
 IGraphNavigator<TypeOfTier1Node> nav = parser.Navigate(r => r.ObjectAtTier1);
 
 // Let's load some data. The previous navigation requests, plus the final path for generation, are used to move the underlying reader.
@@ -35,7 +36,8 @@ IGraphNavigator<TypeOfTier1Node> nav = parser.Navigate(r => r.ObjectAtTier1);
 TypeOfObjectAtTier2 deserializedResult = nav.Generate(t1 => t1.ObjectAtTier2);
 
 // How about enumerating a list of items?
-IEnumerable<TypeOfListItems> itemEnumeration = nav.GenerateElements(t1 => ListOfItemsInTier2)
+// GenerateElements can be used to request an IEnumerable<T> of the requested item type
+IEnumerable<TypeOfListItems> itemEnumeration = nav.GenerateElements(t1 => t1.ListOfItemsInTier2)
 
 ```
 
@@ -43,3 +45,4 @@ Navigation is not strictly necesary. The object graph path in a Generate request
 
 ## Notes
 
+Once the project stabilises, I am planning on publishing a NuGet package to make access to the functionality much easier.

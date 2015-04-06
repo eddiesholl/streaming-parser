@@ -1,10 +1,12 @@
-﻿using System;
+﻿using StreamingParser.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace StreamingParser.Xml
 {
@@ -13,15 +15,39 @@ namespace StreamingParser.Xml
 		public static List<string> GetElementNames<TNode, TChild>(Expression<Func<TNode, TChild>> navExpression)
 		{
 			var result = new List<string>();
-			var nextExpression = navExpression.Body as MemberExpression;
-			
-			while (nextExpression != null && nextExpression.NodeType == ExpressionType.MemberAccess)
+			var nextMemberExpression = CheckMoveNextExpression(navExpression.Body);
+
+			while (nextMemberExpression != null && nextMemberExpression.NodeType == ExpressionType.MemberAccess)
 			{
-				result.Insert(0, GetXmlPathName(nextExpression));
-				nextExpression = nextExpression.Expression as MemberExpression;
+				result.Insert(0, GetXmlPathName(nextMemberExpression));
+				nextMemberExpression = CheckMoveNextExpression(nextMemberExpression.Expression);
 			}
 
 			return result;
+		}
+
+		public static MemberExpression CheckMoveNextExpression(Expression nextExpression)
+		{
+			if (nextExpression == null)
+			{
+				return null;
+			}
+			else
+			{
+				var nextAsMemberExpression = nextExpression as MemberExpression;
+				var nextAsParameterExpression = nextExpression as ParameterExpression;
+
+				// If a navigation expression has been supplied that is not a member reference, throw
+				// The one exception to this rule is a parameter, which must occur at the root.
+				if (nextAsMemberExpression == null && nextAsParameterExpression == null)
+				{
+					throw new InvalidNavigationException(nextExpression);
+				}
+				else
+				{
+					return nextAsMemberExpression;
+				}
+			}
 		}
 
 		public static string GetXmlPathName(Type t)
@@ -52,10 +78,12 @@ namespace StreamingParser.Xml
 
 			if (navPropertyInfo == null)
 			{
-				// Need to fail here, not a property navigation
+				throw new InvalidNavigationException(navExpression);
 			}
 			else
 			{
+				CheckXmlAttributes(navPropertyInfo);
+
 				// parentType will be important once we are interrogating xml directives
 				Type parentType = navPropertyInfo.DeclaringType;
 
@@ -78,6 +106,26 @@ namespace StreamingParser.Xml
 			}
 			
 			return result;
+		}
+
+		public static void CheckXmlAttributes(PropertyInfo propInfo)
+		{
+			// Fail if someone is trying to navigate to a property with attribute XmlAnyAttribute
+			// This will not exist as a concrete source in the underlying XML.
+			// It would be necessary to generate one level up.
+			ThrowInvalidIfAttribute<XmlAnyAttributeAttribute>(propInfo);
+
+			// Likewise for XmlAnyElement
+			ThrowInvalidIfAttribute<XmlAnyElementAttribute>(propInfo);
+			
+		}
+
+		protected static void ThrowInvalidIfAttribute<TAttr>(PropertyInfo propInfo)
+		{
+			if (Attribute.IsDefined(propInfo, typeof(TAttr)))
+			{
+				throw new InvalidNavigationException(typeof(TAttr));
+			}
 		}
 	}
 }
