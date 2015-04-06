@@ -1,5 +1,5 @@
 ﻿using StreamParserTests.Core;
-using StreamParserTests.SampleClasses;
+using StreamParserTests.SampleClasses.PureClasses;
 using System;
 using System.Collections.Generic;
 using System.IO;

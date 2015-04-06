@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StreamParserTests.SampleClasses
+namespace StreamParserTests.SampleClasses.XmlAttributes
 {
-	public class Tier3Element
+	class ElementXmlIgnore
 	{
-		
 	}
 }

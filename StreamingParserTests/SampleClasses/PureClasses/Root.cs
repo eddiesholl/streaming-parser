@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace StreamParserTests.SampleClasses
+namespace StreamParserTests.SampleClasses.PureClasses
 {
 	public class Root
 	{

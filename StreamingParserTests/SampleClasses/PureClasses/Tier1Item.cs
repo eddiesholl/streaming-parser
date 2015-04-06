@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StreamParserTests.SampleClasses
+namespace StreamParserTests.SampleClasses.PureClasses
 {
-	public class Tier2Item
+	public class Tier1Item
 	{
 		public string Name { get; set; }
 	}
