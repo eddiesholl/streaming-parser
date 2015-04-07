@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ExpressionAssert.cs" />
     <Compile Include="Core\SutFactory.cs" />
     <Compile Include="Tests\IntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,7 +81,9 @@
     <Compile Include="SampleClasses\XmlAttributes\ElementXmlText.cs" />
     <Compile Include="SampleClasses\XmlAttributes\ElementXmlType.cs" />
     <Compile Include="SampleClasses\XmlAttributes\RootXmlAttr.cs" />
-    <Compile Include="Tests\XmlAttributeTests.cs" />
+    <Compile Include="Tests\XmlAttributes\XmlAnyAttributeTests.cs" />
+    <Compile Include="Tests\XmlAttributes\XmlAnyElementTests.cs" />
+    <Compile Include="Tests\XmlAttributes\XmlArrayTests.cs" />
     <Compile Include="Tests\XmlExpressionAnalyzerTests.cs" />
   </ItemGroup>
   <ItemGroup>
